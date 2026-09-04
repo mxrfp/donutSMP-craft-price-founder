@@ -17,8 +17,9 @@ Mentre gli altri calcolatori hanno smesso di funzionare, questo script opera in 
 
 Se non sei uno sviluppatore e vuoi solo riavere un calcolatore funzionante:
 1. Vai nella sezione "Releases" sulla destra di questa pagina GitHub.
-2. Scarica l'ultima versione del file `.exe`.
-3. Avvia il file e segui le istruzioni a schermo. Nessuna configurazione complessa richiesta.
+2. Scarica l'ultima versione del file `.zip` disponibile.
+3. Estrai l'intera cartella contenuta nel file ZIP sul tuo desktop (o dove preferisci).
+4. Entra nella cartella estratta, avvia il file `.exe` e segui le istruzioni a schermo. Nessuna configurazione complessa richiesta.
 
 ## Installazione per Sviluppatori (Dal codice sorgente)
 
