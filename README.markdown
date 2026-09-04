@@ -36,7 +36,7 @@ Per eseguire il codice Python direttamente o per compilarlo, e' necessario avere
    playwright install chromium
 
 4. Avvia lo script principale:
-   python nome_del_file.py
+   python main.py
 
 ## Comandi della CLI e Gestione della Cache
 
