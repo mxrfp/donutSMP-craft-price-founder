@@ -14,7 +14,7 @@ print("-"*100)
 keep_cache = False
 
 while True:
-    inp = " ".join(input("Item name (in English) (type exit to quit): ").lower().split())
+    inp = " ".join(input("Item name (type exit to quit): ").lower().split())
     if inp == 'exit':
         sys.exit(0)
     elif inp == "--cache c":
