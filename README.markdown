@@ -25,8 +25,8 @@ Se non sei uno sviluppatore e vuoi solo riavere un calcolatore funzionante:
 Per eseguire il codice Python direttamente o per compilarlo, e' necessario avere Python 3.8+ installato.
 
 1. Clona il repository:
-   git clone https://github.com/TUO-USERNAME/TUO-REPOSITORY.git
-   cd TUO-REPOSITORY
+   git clone https://github.com/mxrfp/donutSMP-craft-price-founder.git
+   cd donutSMP-craft-price-founder
 
 2. Installa le librerie necessarie:
    pip install playwright
