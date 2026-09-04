@@ -1,77 +1,77 @@
 # Donut SMP Auction Crafting Calculator
 
-Un tool da riga di comando (CLI) sviluppato in Python per calcolare in tempo reale il costo totale di crafting di qualsiasi oggetto di Minecraft basandosi sui prezzi dell'economia del server Donut SMP (donut.auction). 
+A command-line interface (CLI) tool developed in Python to calculate the total crafting cost of any Minecraft item in real-time, based on the economy prices of the Donut SMP server (donut.auction). 
 
-La vera forza di questo progetto? Nasce per risolvere il problema della recente chiusura dell'API pubblica di Donut SMP. 
-Mentre gli altri calcolatori hanno smesso di funzionare, questo script opera in totale indipendenza estraendo i prezzi direttamente dalle pagine web tramite Web Scraping, rendendo di nuovo comodo e automatico il calcolo dei craft per tutti i player.
+The real strength of this project? It was created to solve the problem of the recent shutdown of the Donut SMP public API. 
+While other calculators have stopped working, this script operates completely independently by extracting prices directly from web pages via Web Scraping, making craft calculations convenient and automatic again for all players.
 
-## Funzionalita' Principali
+## Main Features
 
-* Soluzione Post-API: Il programma non ha bisogno dell'API ufficiale per funzionare. Legge in autonomia i dati dal sito simulando un normale utente, garantendo che i calcoli continuino a funzionare nonostante i blocchi lato server.
-* Risoluzione ricorsiva delle ricette: Calcola automaticamente l'intero albero di crafting di un oggetto fino ai materiali di base, interfacciandosi con i dataset ufficiali di PrismarineJS.
-* Web Scraping in tempo reale: Utilizza Playwright (Chromium headless) per navigare sul sito donut.auction ed estrarre i prezzi minimi aggiornati.
-* Multithreading: Implementa un'interfaccia asincrona con barra di caricamento visiva che non blocca l'esecuzione delle richieste di rete.
-* Gestione della Cache: Ottimizza i tempi di esecuzione e le risorse di rete memorizzando i prezzi degli oggetti gia' cercati durante la sessione.
+* Post-API Solution: The program does not need the official API to work. It autonomously reads data from the site by simulating a normal user, ensuring calculations continue to work despite server-side blocks.
+* Recursive Recipe Resolution: Automatically calculates the entire crafting tree of an item down to the base materials, interfacing with the official PrismarineJS datasets.
+* Real-time Web Scraping: Uses Playwright (headless Chromium) to navigate the donut.auction site and extract the updated minimum prices.
+* Multithreading: Implements an asynchronous interface with a visual loading bar that does not block the execution of network requests.
+* Cache Management: Optimizes execution times and network resources by storing the prices of items already searched during the session.
 
-## Utilizzo Base (Per chi vuole solo usare il programma)
+## Basic Usage (For those who just want to use the program)
 
-Se non sei uno sviluppatore e vuoi solo riavere un calcolatore funzionante:
-1. Vai nella sezione "Releases" sulla destra di questa pagina GitHub.
-2. Scarica l'ultima versione del file `.zip` disponibile.
-3. Estrai l'intera cartella contenuta nel file ZIP sul tuo desktop (o dove preferisci).
-4. Entra nella cartella estratta, avvia il file `.exe` e segui le istruzioni a schermo. Nessuna configurazione complessa richiesta.
+If you are not a developer and just want to have a working calculator again:
+1. Go to the "Releases" section on the right side of this GitHub page.
+2. Download the latest version of the available `.zip` file.
+3. Extract the entire folder contained in the ZIP file to your desktop (or wherever you prefer).
+4. Enter the extracted folder, launch the `.exe` file, and follow the on-screen instructions. No complex configuration is required.
 
-## Installazione per Sviluppatori (Dal codice sorgente)
+## Developer Installation (From source code)
 
-Per eseguire il codice Python direttamente o per compilarlo, e' necessario avere Python 3.8+ installato.
+To run the Python code directly or to compile it, you need to have Python 3.8+ installed.
 
-1. Clona il repository:
+1. Clone the repository:
    git clone https://github.com/mxrfp/donutSMP-craft-price-founder.git
    cd donutSMP-craft-price-founder
 
-2. Installa le librerie necessarie:
+2. Install the required libraries:
    pip install playwright
 
-3. Installa i browser per Playwright:
+3. Install browsers for Playwright:
    playwright install chromium
 
-4. Avvia lo script principale:
+4. Run the main script:
    python main.py
 
-## Comandi della CLI e Gestione della Cache
+## CLI Commands and Cache Management
 
-L'applicazione include un sistema di cache per evitare di cercare piu' volte lo stesso oggetto su internet. Di default la cache si svuota a ogni nuova ricerca, ma puo' essere gestita tramite dei comandi appositi.
+The application includes a caching system to avoid searching for the same item on the internet multiple times. By default, the cache is cleared after each new search, but it can be managed using specific commands.
 
-Attenzione: I comandi vanno inseriti quando viene richiesto il NOME dell'item, non la quantita'.
+Warning: Commands must be entered when the item NAME is requested, not the quantity.
 
-* --cache c : Svuota completamente la cache corrente.
-* --cache k : Dice allo script di mantenere (keep) la cache alla fine della ricerca. Utile se devi cercare di fila piu' oggetti che condividono gli stessi materiali (es. spada di ferro e piccone di ferro).
-* --cache !k : Disattiva il mantenimento della cache (ritorna al comportamento di default svuotandola a fine ricerca).
-* --cache s : Mostra a schermo il contenuto attuale della cache e i prezzi salvati.
-* exit : Chiude il programma in modo sicuro.
+* --cache c : Completely clears the current cache.
+* --cache k : Tells the script to keep the cache at the end of the search. Useful if you need to search for multiple items in a row that share the same materials (e.g., iron sword and iron pickaxe).
+* --cache !k : Disables cache keeping (returns to the default behavior of clearing it at the end of the search).
+* --cache s : Displays the current contents of the cache and the saved prices on the screen.
+* exit : Safely closes the program.
 
-## Esempio di esecuzione
-
-----------------------------------------------------------------------------------------------------
-                                TROVA PREZZO SU DONUTSMP.AUCTION
-----------------------------------------------------------------------------------------------------
-
-[X] Digita il nome dell'item per trovare il prezzo del craft.
+## Execution Example
 
 ----------------------------------------------------------------------------------------------------
-Nome dell'item (in inglese) (exit per uscire): diamond pickaxe
-Quantita' necessaria di diamond pickaxe (exit per uscire): 1
+                                FIND PRICE ON DONUTSMP.AUCTION
+----------------------------------------------------------------------------------------------------
 
-Cerco prezzo di stick...
+[X] Type the name of the item to find the crafting price.
+
+----------------------------------------------------------------------------------------------------
+Item name (in English) (exit to quit): diamond pickaxe
+Required quantity of diamond pickaxe (exit to quit): 1
+
+Searching for the price of stick...
 |————————————————————| 2.7
-Prezzo stick trovato. (0.5$ x 2)
+Price of stick found. (0.5$ x 2)
 
-Cerco prezzo di diamond...
+Searching for the price of diamond...
 |————————————————————| 2.7
-Prezzo diamond trovato. (150.0$ x 3)
+Price of diamond found. (150.0$ x 3)
 
-Prezzo trovato per il craft di diamond pickaxe x 1: 451.0$
+Price found for crafting diamond pickaxe x 1: 451.0$
 
 ## Disclaimer
 
-Questo strumento e' stato creato a scopo puramente didattico, per facilitare i giocatori in seguito alla rimozione delle API. Non e' in alcun modo affiliato, autorizzato o supportato da Donut SMP, donut.auction o Mojang AB. Il software simula semplicemente la normale navigazione web per estrarre informazioni pubbliche.
+This tool was created for purely educational purposes, to help players following the removal of the API. It is in no way affiliated with, authorized by, or supported by Donut SMP, donut.auction, or Mojang AB. The software simply simulates normal web browsing to extract public information.
