@@ -13,10 +13,7 @@ if getattr(sys, 'frozen', False):
     os.environ["PLAYWRIGHT_BROWSERS_PATH"] = os.path.join(sys._MEIPASS, "ms-playwright") #type: ignore
 
 def parse_remote_minecraft_recipes(version: str = "1.20") -> Dict[str, List[Union[Tuple[str, int], int]]]:
-    """
-    Effettua l'estrazione remota dei dataset ufficiali di Minecraft e converte
-    le ricette nel dizionario tipizzato dict[str, list[Union[tuple[str, int], int]]].
-    """
+  
     data_url = f"https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/pc/{version}"
     
 
@@ -95,7 +92,7 @@ stop_event = threading.Event()
 estimate = 2.7
 
 def print_loading_bar(item_name, lenght=20):
-    print(f"Cerco prezzo di {item_name}...")
+    print(f"Searching price for {item_name}...")
     interval = estimate/lenght
     complete = "".join(["—" for _ in range(lenght)])
     state = [" " for _ in range(lenght)]
@@ -176,7 +173,7 @@ def get_single_cost(item, needed = 1):
                     browser.close()
             except TimeoutError:
                 stop_thread(item_thread, stop_event)
-                print(f"\nNon puoi comprare {name} (non presente nello shop).")
+                print(f"\nYou cannot buy {name} (not present in the shop).")
                 not_found.append(name)
                 cost = 0
     
@@ -185,6 +182,6 @@ def get_single_cost(item, needed = 1):
                 cache[name] = cost
             
         stop_thread(item_thread, stop_event)
-        print(f"\nPrezzo {name} trovato. ({round(cost * quantity, 1)}$ x {quantity})\n")
+        print(f"\nPrice for {name} found. ({round(cost * quantity, 1)}$ x {quantity})\n")
         price += cost * quantity
     return [[round(price * needed, 1)], not_found]
