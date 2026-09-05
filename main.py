@@ -28,7 +28,7 @@ while True:
         clear_cache()
         continue
     elif inp == "--cache s":
-        max_len = len(max(get_cache().keys(), key=len))
+        max_len = len(max(get_cache().keys(), key=len)) if get_cache().keys() else 0
         print("{")
         for key, val in get_cache().items():
             print("    ", end = '')
