@@ -15,7 +15,6 @@ keep_cache = False
 
 while True:
     inp = " ".join(input("Item name (in English) (type exit to quit): ").lower().split())
-    inp = " ".join(input("Item name (type exit to quit): ").lower().split())
     if inp == 'exit':
         sys.exit(0)
     elif inp == "--cache c":
@@ -29,7 +28,7 @@ while True:
         clear_cache()
         continue
     elif inp == "--cache s":
-        max_len = len(max(get_cache().keys(), key=len)) if get_cache().keys() else 0
+        max_len = len(max(get_cache().keys(), key=len))
         print("{")
         for key, val in get_cache().items():
             print("    ", end = '')
