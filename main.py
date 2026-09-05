@@ -3,18 +3,19 @@ import sys
 
 print("-"*100)
 print()
-print("TROVA PREZZO SU DONUTSMP.AUCTION".center(100))
+print("FIND PRICE ON DONUTSMP.AUCTION".center(100))
 print()
 print("-"*100)
 print()
-print("[X] Digita il nome dell'item per trovare il prezzo del craft.")
+print("[X] Type the name of the item to find the crafting price.")
 print()
 print("-"*100)
 
 keep_cache = False
 
 while True:
-    inp = " ".join(input("Nome dell'item (in inglese) (exit per uscire): ").lower().split())
+    inp = " ".join(input("Item name (in English) (type exit to quit): ").lower().split())
+    inp = " ".join(input("Item name (type exit to quit): ").lower().split())
     if inp == 'exit':
         sys.exit(0)
     elif inp == "--cache c":
@@ -36,22 +37,22 @@ while True:
         print("}")
         continue
     while True:
-        n = input(f"Quantita' necessaria di {inp} (exit per uscire): ").strip().lower()
+        n = input(f"Required quantity of {inp} (type exit to quit): ").strip().lower()
         if n == 'exit':
             sys.exit(0)
         try:
             n = int(n)
             if n > 64:
-                print("Inserire un valore minore o uguale a 64.")
+                print("Enter a value less than or equal to 64.")
                 continue
             break
         except ValueError:
-            print("Il valore inserito non e' un numero, riprovare.")
+            print("The value entered is not a number, please try again.")
 
     print()
     price_found, not_included = get_single_cost(inp, n)
-    print(f"Prezzo trovato per il craft di {inp} x {n}: {price_found[0]}$\n" + \
-          ((f"(non includendo {' '.join(not_included)} (non trovati/o))") if not_included else ''))
+    print(f"Price found for crafting {inp} x {n}: {price_found[0]}$\n" + \
+          ((f"(not including {' '.join(not_included)} (not found))") if not_included else ''))
     print()
     if not keep_cache:
         clear_cache()
