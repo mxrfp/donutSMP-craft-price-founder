@@ -59,7 +59,7 @@ Warning: Commands must be entered when the item NAME is requested, not the quant
 [X] Type the name of the item to find the crafting price.
 
 ----------------------------------------------------------------------------------------------------
-Item name (in English) (exit to quit): diamond pickaxe
+Item name (exit to quit): diamond pickaxe
 Required quantity of diamond pickaxe (exit to quit): 1
 
 Searching for the price of stick...
