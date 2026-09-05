@@ -3,18 +3,18 @@ import sys
 
 print("-"*100)
 print()
-print("FIND PRICE ON DONUTSMP.AUCTION".center(100))
+print("TROVA PREZZO SU DONUTSMP.AUCTION".center(100))
 print()
 print("-"*100)
 print()
-print("[X] Type the name of the item to find the crafting price.")
+print("[X] Digita il nome dell'item per trovare il prezzo del craft.")
 print()
 print("-"*100)
 
 keep_cache = False
 
 while True:
-    inp = " ".join(input("Item name (type exit to quit): ").lower().split())
+    inp = " ".join(input("Nome dell'item (in inglese) (exit per uscire): ").lower().split())
     if inp == 'exit':
         sys.exit(0)
     elif inp == "--cache c":
@@ -28,7 +28,7 @@ while True:
         clear_cache()
         continue
     elif inp == "--cache s":
-        max_len = len(max(get_cache().keys(), key=len))
+        max_len = len(max(get_cache().keys(), key=len)) if get_cache().keys() else 0
         print("{")
         for key, val in get_cache().items():
             print("    ", end = '')
@@ -36,22 +36,22 @@ while True:
         print("}")
         continue
     while True:
-        n = input(f"Required quantity of {inp} (type exit to quit): ").strip().lower()
+        n = input(f"Quantita' necessaria di {inp} (exit per uscire): ").strip().lower()
         if n == 'exit':
             sys.exit(0)
         try:
             n = int(n)
             if n > 64:
-                print("Enter a value less than or equal to 64.")
+                print("Inserire un valore minore o uguale a 64.")
                 continue
             break
         except ValueError:
-            print("The value entered is not a number, please try again.")
+            print("Il valore inserito non e' un numero, riprovare.")
 
     print()
     price_found, not_included = get_single_cost(inp, n)
-    print(f"Price found for crafting {inp} x {n}: {price_found[0]}$\n" + \
-          ((f"(not including {' '.join(not_included)} (not found))") if not_included else ''))
+    print(f"Prezzo trovato per il craft di {inp} x {n}: {price_found[0]}$\n" + \
+          ((f"(non includendo {' '.join(not_included)} (non trovati/o))") if not_included else ''))
     print()
     if not keep_cache:
         clear_cache()
