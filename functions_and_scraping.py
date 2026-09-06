@@ -8,11 +8,29 @@ import threading
 import time
 import sys
 import os
+import requests
 
 if getattr(sys, 'frozen', False):
     os.environ["PLAYWRIGHT_BROWSERS_PATH"] = os.path.join(sys._MEIPASS, "ms-playwright") #type: ignore
 
-def parse_remote_minecraft_recipes(version: str = "1.20") -> Dict[str, List[Union[Tuple[str, int], int]]]:
+def get_latest_supported_minecraft_data_version() -> str:
+
+    versions_url = "https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/pc/common/versions.json"
+    
+    try:
+        response = requests.get(versions_url, timeout=5)
+        response.raise_for_status()
+        supported_versions = response.json()
+        
+     
+        return supported_versions[-1]
+    except Exception:
+  
+        return "1.20"
+
+v = get_latest_supported_minecraft_data_version()
+
+def parse_remote_minecraft_recipes(version: str = v) -> Dict[str, List[Union[Tuple[str, int], int]]]:
   
     data_url = f"https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/pc/{version}"
     
@@ -149,39 +167,82 @@ def get_cache():
     global cache
     return cache
 
-def get_single_cost(item, needed = 1):
+wood_logs = {
+
+    "oak log",
+    "spruce log",
+    "birch log",
+    "jungle log",
+    "acacia log",
+    "dark oak log",
+    "mangrove log",
+    "cherry log",
+    "pale oak log",
+
+}
+
+def get_dict(price_list):
+    price_dict = {}
+    for i in price_list:
+        name, cost, found = i
+        if found:
+            price_dict[cost] = [name, found]
+    if not price_dict:
+        price_dict[price_list[0][1]] = [price_list[[0][0]], False]
+    return price_dict
+
+def get_price(name, quantity, _check = True, deep_search = True):
+    found = True
+    if deep_search:
+        if name in wood_logs and _check:
+            price_list = [get_price(i, quantity, _check=False) for i in wood_logs]
+            price_dict = get_dict(price_list)
+            min_found = min(price_dict.keys())
+            return [price_dict[min_found][0], min_found, price_dict[min_found][1]]
+        elif name in {'coal', 'charcoal'} and _check:
+            price_dict = {get_price(i, quantity, _check=False)[1]:i for i in {'coal', 'charcoal'}}
+            min_found = min(price_dict.keys())
+            return [price_dict[min_found], min_found, found]
+    item_thread = threading.Thread(target=print_loading_bar, args=(name,))
+    item_thread.start()
+    cost = float('inf')
+    item_data = []
+    if name in cache:
+        cost = cache[name]
+    else:
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                item_data = get_prices(browser, name)
+                browser.close()
+        except TimeoutError:
+            stop_thread(item_thread, stop_event)
+            print(f"\nYou cannot buy {name} (not present in the shop).")
+            found = False
+            cost = 0
+
+        for element in item_data:
+            cost = min(cost, int(element[1].strip().replace(",", ""))/int(element[2]))
+            cache[name] = cost
+            
+    stop_thread(item_thread, stop_event)
+    print(f"\nPrice for {name} found. ({round(cost * quantity, 1)}$ x {quantity})\n")
+    return [name, cost, found]
+
+
+def get_single_cost(item, needed = 1, deep_search = True):
     global_name = f"minecraft:{item.lower().replace(' ', '_')}"
     if not items.get(global_name):
         item_craft = [(item, 1)]
     else:
         item_craft = flatten(expand_craft(items.get(global_name), item))
     price = 0
-    not_found = []
+    ingrediens_used = []
     for ingredient in item_craft:
-        name, quantity = ingredient
-        item_thread = threading.Thread(target=print_loading_bar, args=(name,))
-        item_thread.start()
-        cost = float('inf')
-        item_data = []
-        if name in cache:
-            cost = cache[name]
-        else:
-            try:
-                with sync_playwright() as p:
-                    browser = p.chromium.launch(headless=True)
-                    item_data = get_prices(browser, name)
-                    browser.close()
-            except TimeoutError:
-                stop_thread(item_thread, stop_event)
-                print(f"\nYou cannot buy {name} (not present in the shop).")
-                not_found.append(name)
-                cost = 0
-    
-            for element in item_data:
-                cost = min(cost, int(element[1].strip().replace(",", ""))/int(element[2]))
-                cache[name] = cost
-            
-        stop_thread(item_thread, stop_event)
-        print(f"\nPrice for {name} found. ({round(cost * quantity, 1)}$ x {quantity})\n")
-        price += cost * quantity
-    return [[round(price * needed, 1)], not_found]
+        name, quant = ingredient
+        result = get_price(name, quant, deep_search=deep_search)
+        price += result[1]
+        ingrediens_used.append(result + [quant])
+
+    return [[round(price * needed, 1)], ingrediens_used]
+
