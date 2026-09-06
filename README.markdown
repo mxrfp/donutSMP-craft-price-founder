@@ -48,6 +48,8 @@ Warning: Commands must be entered when the item NAME is requested, not the quant
 * --cache k : Tells the script to keep the cache at the end of the search. Useful if you need to search for multiple items in a row that share the same materials (e.g., iron sword and iron pickaxe).
 * --cache !k : Disables cache keeping (returns to the default behavior of clearing it at the end of the search).
 * --cache s : Displays the current contents of the cache and the saved prices on the screen.
+* --search d : Compares different prices of eqivalent materials to get the cheapest option. (default).
+* --search q : Quick search without price comparison.
 * exit : Safely closes the program.
 
 ## Execution Example
