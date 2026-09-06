@@ -50,6 +50,7 @@ Warning: Commands must be entered when the item NAME is requested, not the quant
 * --cache s : Displays the current contents of the cache and the saved prices on the screen.
 * --search d : Compares different prices of eqivalent materials to get the cheapest option. (default).
 * --search q : Quick search without price comparison.
+* --version : Prints the current minecraft version.
 * exit : Safely closes the program.
 
 ## Execution Example
