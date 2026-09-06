@@ -47,7 +47,7 @@ while True:
             print(f"current version: {v}")
             continue
     if f"minecraft:{inp}".replace(" ", "_") not in items:
-        print("Item not found in shop.")
+        print("Item is not craftable.")
         continue
     while True:
         n = input(f"Required quantity of {inp} (type exit to quit): ").strip().lower()
